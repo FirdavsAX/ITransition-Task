@@ -1,12 +1,6 @@
 ﻿namespace Task3;
-public class Move
+public class Move(int id, string name)
 {
-    private static int Counter = 1;
-    public int Id { get; }
-    public string Name { get; set; }
-
-    public Move()
-    {
-        Id = Counter++;
-    }
+    public int Id { get; set; } = id;
+    public string Name { get; set; } = name;
 }
