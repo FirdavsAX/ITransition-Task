@@ -112,17 +112,14 @@ namespace Task3
         private bool EvaluateGameResult(int result)
         {
             if (result == 0)
-            {
                 Console.WriteLine("It's a draw!");
-                return true;
-            }
             else if (result == -1)
-            {
                 Console.WriteLine("You lose!");
+            else if (result == 1)
+                Console.WriteLine("You win!");
+            else
                 return false;
-            }
 
-            Console.WriteLine("You win!");
             return true;
         }
     }
