@@ -1,18 +1,37 @@
-﻿
-namespace Task3
+﻿namespace Task3
 {
     public class MoveService
     {
-        public List<Move> ParseMoves(string movesString)
+        public List<Move> GetMoves()
         {
-            var moveNames = movesString.Split(' ', StringSplitOptions.RemoveEmptyEntries).Distinct().ToList();
+            List<string> moveNames = new List<string>();
+            string movesString = "";
 
-            if (!IsValidMoveCount(moveNames.Count))
+            while (string.IsNullOrWhiteSpace(movesString))
             {
-                Console.WriteLine("Invalid move count! Enter an odd number of unique moves (e.g., 'rock paper scissors').");
-                return null;
-            }
+                Console.WriteLine("Enter moves (e.g., 'rock paper scissors'):");
+                movesString = Console.ReadLine();
 
+                if (string.IsNullOrWhiteSpace(movesString))
+                {
+                    InputError.DisplayEmptyInputError();
+                    continue;
+                }
+
+                moveNames = movesString.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
+                if (moveNames.Count != moveNames.Distinct().Count())
+                {
+                    InputError.DisplayDuplicateInputError();
+                    movesString = "";
+                    continue;
+                }
+
+                if (!IsValidMoveCount(moveNames.Count))
+                {
+                    InputError.DisplayInvalidMoveCountError();
+                    movesString = "";
+                }
+            }
             return CreateMoves(moveNames);
         }
 
