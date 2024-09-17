@@ -1,37 +1,38 @@
-﻿namespace Task3
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace Task3
 {
     public class MoveService
     {
-        public List<Move> GetMoves()
+        public List<Move> GetMoves(string[] args)
         {
             List<string> moveNames = new List<string>();
-            string movesString = "";
 
-            while (string.IsNullOrWhiteSpace(movesString))
+            // Check if command-line arguments are provided
+            if (args.Length == 0)
             {
-                Console.WriteLine("Enter moves (e.g., 'rock paper scissors'):");
-                movesString = Console.ReadLine();
-
-                if (string.IsNullOrWhiteSpace(movesString))
-                {
-                    InputError.DisplayEmptyInputError();
-                    continue;
-                }
-
-                moveNames = movesString.Split(' ', StringSplitOptions.RemoveEmptyEntries).ToList();
-                if (moveNames.Count != moveNames.Distinct().Count())
-                {
-                    InputError.DisplayDuplicateInputError();
-                    movesString = "";
-                    continue;
-                }
-
-                if (!IsValidMoveCount(moveNames.Count))
-                {
-                    InputError.DisplayInvalidMoveCountError();
-                    movesString = "";
-                }
+                Console.WriteLine("Error: Please provide moves via command-line arguments (e.g., 'rock paper scissors').");
+                return null;
             }
+
+            moveNames = args.ToList();
+
+            // Check for duplicate moves
+            if (moveNames.Count != moveNames.Distinct().Count())
+            {
+                InputError.DisplayDuplicateInputError();
+                return null;
+            }
+
+            // Validate move count
+            if (!IsValidMoveCount(moveNames.Count))
+            {
+                InputError.DisplayInvalidMoveCountError();
+                return null;
+            }
+
             return CreateMoves(moveNames);
         }
 
